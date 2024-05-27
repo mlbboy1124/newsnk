@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.2.final using JasperReports Library version 6.21.2-8434a0bd7c3bbc37cbf916f2968d35e4b165821a  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receipt" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="123e4567-e89b-12d3-a456-426614174000">
+	<parameter name="client" class="java.lang.String"/>
+	<parameter name="caseNumber" class="java.lang.String"/>
+	<parameter name="registrationType" class="java.lang.String"/>
+	<parameter name="caseReceivedDate" class="java.util.Date"/>
+	<parameter name="detailedType" class="java.lang.String"/>
+	<parameter name="baseAmount" class="java.lang.Integer"/>
+	<parameter name="taxes" class="java.util.Map"/>
+	<parameter name="fees" class="java.util.Map"/>
+	<parameter name="total" class="java.lang.Integer"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="amount" class="java.lang.Integer"/>
+	<title>
+		<band height="50">
+			<textField>
+				<reportElement x="0" y="0" width="555" height="30" uuid="8c13f79c-1b29-4d92-9856-d0c8efb9e01b"/>
+				<textElement textAlignment="Center">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["비용 계산서 (영수증)"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="60">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="d81e6b54-3c97-4c3c-a1b8-14d5c902fa6b"/>
+				<text><![CDATA[의뢰인 :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="0" width="455" height="20" uuid="a64f27b2-0f5b-4b55-8fbd-d8d1e2b6ab39"/>
+				<textFieldExpression><![CDATA[$P{client}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="100" height="20" uuid="ffb9de55-3e8d-4ff7-9a28-5e912d8b80bb"/>
+				<text><![CDATA[사건번호 :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="20" width="455" height="20" uuid="a1ad5d9b-7c9f-4c9e-973e-0d5d667fb0b6"/>
+				<textFieldExpression><![CDATA[$P{caseNumber}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="40" width="100" height="20" uuid="bff8dcb0-5158-472b-9ba3-8799dc9d3f79"/>
+				<text><![CDATA[등기구분 :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="40" width="455" height="20" uuid="7c3b5b5d-d3ad-4e35-9ec1-73fcbab3cfb8"/>
+				<textFieldExpression><![CDATA[$P{registrationType}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="200">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="db1e7d7a-1843-4f19-905b-1c44593c8d4b"/>
+				<text><![CDATA[공과금]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="120" width="100" height="20" uuid="aa1d58f5-8c5b-47b2-a2f0-55e3e8a7edfb"/>
+				<text><![CDATA[보수료]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="50">
+			<textField>
+				<reportElement x="0" y="0" width="555" height="20" uuid="27b1b888-c5f7-4a8d-a8ec-3048d3f8e6ed"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["2024 - 05 - 23"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
