@@ -22,17 +22,3 @@ const app = createApp(App);
 app.use(BootstrapVue3);
 app.use(router);
 app.mount('#app');
-
-// 라우터 가드 설정
-router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token');
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-
-  if (to.path === '/' && token) {
-    next('/home');
-  } else if (requiresAuth && !token) {
-    next('/');
-  } else {
-    next();
-  }
-});

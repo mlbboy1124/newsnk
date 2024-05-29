@@ -51,8 +51,12 @@
             <td>{{ lawsuit.opponents.join(', ') }}</td>
           </tr>
           <tr>
-            <th class="text-center">법원</th>
-            <td>{{ lawsuit.court }}</td>
+            <th class="text-center">기초금액</th>
+            <td>
+  <input :value="formattedValue(courtprice)" @input="updateCourtPrice($event)" class="form-control" style="padding-bottom: 1px; padding-top: 1px;" />
+</td>
+
+
             <th class="text-center">세부내용</th>
             <td><input v-model="sub_content" class="form-control" style="padding-bottom: 1px; padding-top: 1px;" /></td>
           </tr>
@@ -139,10 +143,11 @@ export default {
         manager: '',
         clients: [],
         opponents: [],
-        court: ''
+        court: 0,
       },
       sub_content: '', // 입력받을 내용 추가
       notes: '', // 입력받을 참고사항 추가
+      courtprice: 0, // 기초금액 추가
       expensesLeft: [
         { name: '인지', amount: 0 },
         { name: '송달료', amount: 0 },
@@ -168,7 +173,7 @@ export default {
       return Math.max(this.expensesLeft.length, this.expensesRight.length);
     },
     rightAmount() {
-      const rightSum = this.expensesRight.reduce((sum, item) => sum + parseInt(item.amount, 10), 0);
+      const rightSum = this.expensesRight.reduce((sum, item) => sum + (item.amount || 0), 0);
       return rightSum;
     },
     VAT() {
@@ -176,7 +181,7 @@ export default {
       return Math.floor(rightSum * 0.1);
     },
     LeftAmount() {
-      const leftSum = this.expensesLeft.reduce((sum, item) => sum + parseInt(item.amount, 10), 0);
+      const leftSum = this.expensesLeft.reduce((sum, item) => sum + (item.amount || 0), 0);
       return leftSum;
     },
     totalAmount() {
@@ -199,7 +204,6 @@ export default {
     this.fetchReceipts();
   },
   methods: {
-
     fetchLawsuit() {
       const lawsuit_id = this.index;
       axios.get(`/api/lawsuits/${lawsuit_id}`)
@@ -220,7 +224,6 @@ export default {
           console.error('영수증 목록을 불러오는 중에 오류가 발생했습니다:', error);
         });
     },
-
     addExpenseItem() {
       this.expensesLeft.push({ name: '', amount: 0 });
       this.expensesRight.push({ name: '', amount: 0 });
@@ -247,20 +250,31 @@ export default {
       const value = event.target.value.replace(/,/g, '');
       array[index].amount = parseInt(value, 10) || 0;
     },
+    updateCourtPrice(event) {
+    const value = event.target.value.replace(/,/g, '');
+    this.courtprice = parseInt(value, 10) || 0;
+  },
     formattedValue(value) {
       return new Intl.NumberFormat().format(value);
     },
     saveReceipt() {
       const data = {
         lawsuit_id: this.index,
-        expensesLeft: this.expensesLeft,
-        expensesRight: this.expensesRight,
+        expensesLeft: this.expensesLeft.map(expense => ({
+          ...expense,
+          amount: expense.amount === 0 ? null : expense.amount
+        })),
+        expensesRight: this.expensesRight.map(expense => ({
+          ...expense,
+          amount: expense.amount === 0 ? null : expense.amount
+        })),
         VAT: this.VAT,
         LeftAmount: this.LeftAmount,
         rightAmount: this.rightAmount,
         totalAmount: this.totalAmount + this.VAT,
         sub_content: this.sub_content, // 입력된 내용 저장
-        notes: this.notes, // 입력된 참고사항 저장
+        notes: this.notes === '' ? null : this.notes, // 비어있으면 null로 저장
+        courtprice: this.courtprice === 0 ? null : this.courtprice, // 기초금액 저장
       };
       axios.post('/api/lawsuits/receipt/save', data)
         .then(() => {
@@ -281,18 +295,23 @@ export default {
           console.error('영수증 삭제 중 오류가 발생했습니다:', error);
         });
     },
-
     navigateToReport(receipt_id) {
       const url = this.$router.resolve({ name: 'LawsuitReceiptReport', params: { receipt_id } }).href;
       const newWindowName = `newwindow-${receipt_id}`;
       window.open(url, newWindowName, 'width=1050,height=800');
     },
-
     loadReceipt(receipt) {
-      this.expensesLeft = receipt.expensesLeft;
-      this.expensesRight = receipt.expensesRight;
+      this.expensesLeft = receipt.expensesLeft.map(expense => ({
+        ...expense,
+        amount: expense.amount === null ? 0 : expense.amount
+      }));
+      this.expensesRight = receipt.expensesRight.map(expense => ({
+        ...expense,
+        amount: expense.amount === null ? 0 : expense.amount
+      }));
       this.sub_content = receipt.sub_content; // 저장된 내용 불러오기
       this.notes = receipt.notes; // 저장된 참고사항 불러오기
+      this.courtprice = receipt.courtprice; // 저장된 기초금액 불러오기
     },
     resetForm() {
       this.expensesLeft = [
@@ -313,9 +332,9 @@ export default {
       ];
       this.sub_content = ''; // 폼 초기화 시 내용도 초기화
       this.notes = ''; // 폼 초기화 시 참고사항도 초기화
+      this.courtprice = 0; // 기초금액도 초기화
     },
   },
-
 };
 </script>
 
@@ -371,8 +390,6 @@ h3 {
   width: 150px;
   /* 원하는 너비로 설정 */
 }
-
-
 
 .table-hover tbody tr:hover {
   background-color: rgba(51, 80, 176, 0.1) !important;
