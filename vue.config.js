@@ -4,9 +4,6 @@ module.exports = defineConfig({
 })
 
 module.exports = {
-
-
-
   chainWebpack: (config) => {
     config.plugin('define').tap((definitions) => {
       Object.assign(definitions[0], {
@@ -21,12 +18,10 @@ module.exports = {
   devServer: {
     proxy: {
       "/api": {
-        target:"http://localhost:3000",
+        target: "http://localhost:3000",
         changeOrigin: true,
         secure: false,
       },
-    }
+    },
   },
-
 }
-
