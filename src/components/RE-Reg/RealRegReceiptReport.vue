@@ -25,6 +25,10 @@
           <td class="col_head" style="text-align: right;border-style:hidden;width: 125px;">기초금액 :</td>
           <td class="col_head" style="text-align: center;border-style:hidden;">{{ formattedValue(receiptreportfiltered.realreg.sell_price) }}</td>
         </tr>
+        <tr>
+          <td class="col_head" style="text-align: right;border-style:hidden;width: 125px;">목적물 주소 :</td>
+          <td colspan="3" class="col_head" style="text-align: center;border-style:hidden;">{{ receiptreportfiltered.realreg.transaction_address }}</td>
+        </tr>
       </tbody>
     </table>
 
