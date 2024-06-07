@@ -18,7 +18,7 @@ module.exports = {
   devServer: {
     proxy: {
       "/api": {
-        target: "https://port-0-backend-and8yv2klx4clqjs.sel5.cloudtype.app/",
+        target: "https://port-0-backend-and8yv2klx4clqjs.sel5.cloudtype.app",
         changeOrigin: true,
         secure: false,
       },
