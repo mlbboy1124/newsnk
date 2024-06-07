@@ -1,8 +1,7 @@
 <template>
   <div class="container">
     <div class="contents">
-      <h2>상업등기</h2>
-      <p>Welcome to the About Page!</p>
+      <h2 style="text-align: center;"><br><br><br>상업등기 페이지 제작중입니다.</h2>
     </div>
   </div>
   </template>

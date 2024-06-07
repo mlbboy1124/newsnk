@@ -1,12 +1,12 @@
 <template>
-  <div class="print_body" ref="printBody" v-if="receiptreportfiltered.receipt && receiptreportfiltered.lawsuit">
+  <div class="print_body" ref="printBody" v-if="receiptreportfiltered.receipt && receiptreportfiltered.realreg">
     <h1>비용 계산서 (영수증)</h1>
     <table class="total_table">
       <tbody>
         <tr>
           <td class="col_head" style="text-align: right;border-style:hidden;width: 125px;">의뢰인 :</td>
           <td class="col_head" style="text-align: center;border-style:hidden;">{{
-            receiptreportfiltered.lawsuit.clients.join(', ') }}</td>
+            receiptreportfiltered.realreg.buyer }}</td>
           <td class="col_head" style="text-align: right;border-style:hidden;width: 125px;">사건 접수일 :</td>
           <td class="col_head" style="text-align: center;border-style:hidden;">{{
             receiptreportfiltered.receipt.createdAt }}</td>
@@ -14,16 +14,16 @@
         <tr>
           <td class="col_head" style="text-align: right;border-style:hidden;width: 125px;">구분 :</td>
           <td class="col_head" style="text-align: center;border-style:hidden;width: 30%;">{{
-            receiptreportfiltered.lawsuit.caseName }}</td>
-          <td class="col_head" style="text-align: right;border-style:hidden;width: 125px;">상세구분 :</td>
+            receiptreportfiltered.realreg.requester }}</td>
+          <td class="col_head" style="text-align: right;border-style:hidden;width: 125px;">등기구분 :</td>
           <td class="col_head" style="text-align: center;border-style:hidden;">{{
-            receiptreportfiltered.receipt.sub_content }}</td>
+            receiptreportfiltered.realreg.division }}</td>
         </tr>
         <tr>
           <td class="col_head" style="text-align: right;border-style:hidden;width: 125px;">사건번호 :</td>
           <td class="col_head" style="text-align: center;border-style:hidden;">{{ caseNum }}</td>
           <td class="col_head" style="text-align: right;border-style:hidden;width: 125px;">기초금액 :</td>
-          <td class="col_head" style="text-align: center;border-style:hidden;">{{ formattedValue(receiptreportfiltered.receipt.courtprice) }}</td>
+          <td class="col_head" style="text-align: center;border-style:hidden;">{{ formattedValue(receiptreportfiltered.realreg.sell_price) }}</td>
         </tr>
       </tbody>
     </table>
@@ -133,7 +133,7 @@ export default {
     return {
       receiptreportfiltered: {
         receipt: null,
-        lawsuit: null
+        realreg: null
       }
     };
   },
@@ -163,14 +163,14 @@ export default {
 
   methods: {
     loadReceipt() {
-      axios.get(`/api/lawsuits/receipts/reportpage/${this.receipt_id}`)
+      axios.get(`/api/realregs/receipts/reportpage/${this.receipt_id}`)
         .then(response => {
           this.receiptreportfiltered.receipt = response.data;
           console.log(response.data);
-          return axios.get(`/api/lawsuits/${response.data.lawsuit_id}`);
+          return axios.get(`/api/realregs/${response.data.realreg_id}`);
         })
         .then(response => {
-          this.receiptreportfiltered.lawsuit = response.data;
+          this.receiptreportfiltered.realreg = response.data;
           this.$nextTick(() => {
           this.waitForImagesAndPrint();
         });

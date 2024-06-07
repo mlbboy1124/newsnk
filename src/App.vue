@@ -18,7 +18,11 @@ export default {
   },
   watch: {
     '$route'(to) {
-      if (to.name === 'LawsuitDocument' || to.name === 'LawsuitReceipt' || to.name === 'LawsuitReceiptReport') {
+      if (to.name === 'LawsuitDocument' 
+       || to.name === 'LawsuitReceipt'
+       || to.name === 'LawsuitReceiptReport'
+       || to.name === 'RealRegReceipt'
+       || to.name === 'RealRegReceiptReport') {
         this.showHeader = false;
       } else {
         this.showHeader = !!localStorage.getItem('token');

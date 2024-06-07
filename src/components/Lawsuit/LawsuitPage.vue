@@ -2,11 +2,12 @@
   <div class="container">
     <div class="contents">
       <div class="row justify-content-between mb-3">
+        <h2 class="mb-4" style="margin-top:25px;">소송사건</h2>
         <div class="col-auto">
           <input v-model="searchQuery" @input="onSearch" placeholder="검색어를 입력하세요" class="form-control mb-3" />
         </div>
         <div class="col-auto">
-          <b-button variant="outline-primary" class="mx-1" @click="showModal">작성</b-button>
+          <b-button variant="outline-primary" class="mx-1" @click="showModal">소송사건 작성</b-button>
         </div>
       </div>
 
@@ -51,7 +52,6 @@
 
       <!-- 소송 리스트 테이블 -->
       <div v-if="paginatedLawsuits.length > 0">
-        <h3>소송 리스트</h3>
         <table class="table">
           <thead>
             <tr>
@@ -64,7 +64,7 @@
               <th>사건명</th>
               <th>관할법원</th>
               <th>담당자</th>
-              <th>작업</th>
+              <th class="lastcol">작업</th>
             </tr>
           </thead>
           <tbody>
@@ -256,5 +256,14 @@ export default {
 .custom-modal .modal-content {
   top: 50%;
   transform: translateY(-50%);
+}
+
+.table {
+  font-size : 14px;
+  min-width : 1000px;
+}
+
+.lastcol{
+  width:310px;
 }
 </style>
