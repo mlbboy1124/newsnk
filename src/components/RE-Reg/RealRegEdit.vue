@@ -129,7 +129,7 @@
 
 
 <script>
-import axios from 'axios';
+import axios from '@/axios';
 
 export default {
     props: ['realreg_id'],

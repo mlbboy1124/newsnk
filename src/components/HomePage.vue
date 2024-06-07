@@ -30,7 +30,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import holidays from './holidays.json'; // 경로를 적절히 조정하세요
 import koLocale from '@fullcalendar/core/locales/ko';
-import axios from 'axios';
+import axios from '@/axios';
 
 export default {
   components: {
