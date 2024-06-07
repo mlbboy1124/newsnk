@@ -36,18 +36,14 @@ export default {
   },
   methods: {
     async login() {
-      console.log('Sending login request:', this.username, this.password); // 요청 전에 로그 추가
       try {
-        const response = await axios.post('/api/login', {
+        const response = await axios.post('https://port-0-backend-and8yv2klx4clqjs.sel5.cloudtype.app/api/login', {
           username: this.username,
           password: this.password
         });
-        console.log('Login response:', response); // 응답 후 로그 추가
-
         localStorage.setItem('token', response.data.token);
         this.$router.push('/home');
       } catch (error) {
-        console.error('Login error:', error); // 에러 로그 추가
         alert('아이디 또는 패스워드를 다시 확인하여 시도해주시기 바랍니다.');
       }
     }
