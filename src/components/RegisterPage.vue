@@ -71,8 +71,10 @@ export default {
   },
   computed: {
     filteredOffices() {
+      console.log('Filtering offices with searchQuery:', this.searchQuery);
+      console.log('Offices:', this.offices);
       const filtered = this.offices.filter(office => office.office_name && office.office_name.includes(this.searchQuery)).slice(0, 10);
-      
+      console.log('Filtered offices:', filtered);
       return filtered;
     }
   },
@@ -83,6 +85,7 @@ export default {
         return;
       }
       try {
+        console.log('Registering user:', this.username);
         await axios.post('/api/register', {
           username: this.username,
           password: this.password,
@@ -96,17 +99,18 @@ export default {
         alert('회원가입이 완료되었습니다.');
         this.$router.push('/');
       } catch (error) {
+        console.error('Error during registration:', error);
         alert('회원가입 중 오류가 발생했습니다.');
       }
     },
     openModal() {
       this.isModalOpen = true;
-      
+      console.log('Modal opened');
       this.searchOffices(); // 모달이 열릴 때 초기 검색
     },
     closeModal() {
       this.isModalOpen = false;
-      
+      console.log('Modal closed');
     },
     async searchOffices() {
       if (!this.searchQuery) {
@@ -114,14 +118,18 @@ export default {
         return;
       }
       try {
+        console.log('Searching offices with query:', this.searchQuery);
         const response = await axios.get(`/api/offices?q=${this.searchQuery}`);
         this.offices = response.data;
+        console.log('Offices found:', this.offices);
       } catch (error) {
+        console.error('Error during office search:', error);
         alert('사무실 목록을 불러오는 중 오류가 발생했습니다.');
       }
     },
     selectOffice(office) {
       this.officeName = office.office_name;
+      console.log('Office selected:', office);
       this.closeModal();
     },
   }
