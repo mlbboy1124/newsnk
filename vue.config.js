@@ -12,7 +12,4 @@ module.exports = defineConfig({
       return definitions;
     });
   },
-  devServer: {
-    historyApiFallback: true, // 이 옵션을 추가하여 devServer가 history API fallback을 지원하도록 합니다.
-  }
 });
