@@ -7,12 +7,17 @@
                     <tbody>
                         <tr>
                             <th class="text-center">구분</th>
-                            <td><input v-model="division1" class="form-control"
-                                    style="padding-bottom: 1px; padding-top: 1px;" /></td>
+                            <td>
+                                <select v-model="division1" class="form-control" :style="{ color: division1Color }"
+                                    style="padding-bottom: 1px; padding-top: 1px;">
+                                    <option value="상업등기">상업등기</option>
+                                    <option value="부동산등기">부동산등기</option>
+                                    <option value="소송사건">소송사건</option>
+                                </select>
+                            </td>
                             <th class="text-center">등기구분</th>
                             <td><input v-model="division2" class="form-control"
                                     style="padding-bottom: 1px; padding-top: 1px;" /></td>
-
                         </tr>
                         <tr>
                             <th class="text-center">의뢰인</th>
@@ -222,6 +227,16 @@ export default {
         disableRemoveButton() {
             return this.expensesLeft.length <= 6 && this.expensesRight.length <= 6;
         },
+        division1Color() {
+            switch (this.division1) {
+                case '상업등기':
+                    return 'blue';
+                case '부동산등기':
+                    return 'green';
+                default:
+                    return 'black';
+            }
+        },
     },
     methods: {
         async loadReceiptbyid(easyreceipt_id) {
@@ -310,30 +325,30 @@ export default {
             };
 
             try {
-            let response;
-            if (this.isEdit) {
-                // Update existing receipt
-                response = await axios.put(`/api/easyreceipt/${this.easyreceipt_id}`, data);
-                if (response.status === 200) {
-                    alert('간편영수증 수정 완료');
+                let response;
+                if (this.isEdit) {
+                    // Update existing receipt
+                    response = await axios.put(`/api/easyreceipt/${this.easyreceipt_id}`, data);
+                    if (response.status === 200) {
+                        alert('간편영수증 수정 완료');
+                    } else {
+                        alert('간편영수증 수정 실패');
+                    }
                 } else {
-                    alert('간편영수증 수정 실패');
+                    // Create new receipt
+                    response = await axios.post('/api/easyreceipt/receipt/save', data);
+                    if (response.status === 200) {
+                        alert('간편영수증 작성 완료');
+                    } else {
+                        alert('간편영수증 작성 실패');
+                    }
                 }
-            } else {
-                // Create new receipt
-                response = await axios.post('/api/easyreceipt/receipt/save', data);
-                if (response.status === 200) {
-                    alert('간편영수증 작성 완료');
-                } else {
-                    alert('간편영수증 작성 실패');
-                }
+                this.$router.go(-1);
+            } catch (error) {
+                console.error('간편영수증 저장 중 오류가 발생했습니다:', error);
+                alert('간편영수증 저장 중 오류가 발생했습니다.');
             }
-            this.$router.go(-1);
-        } catch (error) {
-            console.error('간편영수증 저장 중 오류가 발생했습니다:', error);
-            alert('간편영수증 저장 중 오류가 발생했습니다.');
-        }
-    },
+        },
         resetForm() {
             this.division1 = '',
                 this.division2 = '',
