@@ -240,7 +240,6 @@ export default {
             axios.get(`/api/realregs/receipts/${this.realreg_id}`)
                 .then(response => {
                     this.receipts = response.data
-                    console.log(response.data);
                 })
                 .catch(error => {
                     console.error('영수증 목록을 불러오는 중에 오류가 발생했습니다:', error);

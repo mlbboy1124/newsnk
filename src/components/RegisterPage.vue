@@ -71,10 +71,7 @@ export default {
   },
   computed: {
     filteredOffices() {
-      console.log('Filtering offices with searchQuery:', this.searchQuery);
-      console.log('Offices:', this.offices);
       const filtered = this.offices.filter(office => office.office_name && office.office_name.includes(this.searchQuery)).slice(0, 10);
-      console.log('Filtered offices:', filtered);
       return filtered;
     }
   },

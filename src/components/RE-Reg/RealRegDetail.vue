@@ -138,13 +138,16 @@ export default {
     },
     deleteRealreg() {
       const realreg_id = this.realreg.realreg_id;
-      axios.delete(`/api/realregs/${realreg_id}`)
-        .then(() => {
+      if (confirm("이 부동산 사건을 삭제하시겠습니까?")) {
+        try {
+          axios.delete(`/api/realregs/${realreg_id}`);
+          alert("부동산 사건이 삭제되었습니다.");
           this.$router.push({ path: '/realreg' });
-        })
-        .catch(error => {
-          console.error('부동산사건 삭제 중 오류가 발생했습니다:', error);
-        });
+        } catch (error) {
+          console.error("부동산사건 삭제 중 오류가 발생했습니다:", error.response ? error.response.data : error.message);
+          alert("부동산 사건 삭제 중 오류가 발생했습니다.");
+        }
+      }
     },
     formattedValue(value) {
       return new Intl.NumberFormat().format(value);

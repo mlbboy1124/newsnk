@@ -9,6 +9,7 @@
       <div class="d-flex align-items-center">
         <b-nav pills>
           <b-nav-item to="/home" exact class="menu-item">일정</b-nav-item>
+          <b-nav-item to="/easyreceipt" class="menu-item">간편영수증</b-nav-item>
           <b-nav-item to="/coreg" class="menu-item">상업등기</b-nav-item>
           <b-nav-item to="/realreg" class="menu-item">부동산등기</b-nav-item>
           <b-nav-item to="/lawsuit" class="menu-item">소송</b-nav-item>

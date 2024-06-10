@@ -234,6 +234,8 @@ export default {
     align-items: center;
     margin-bottom: 50px;
     background-color: #fbfbfb;
+    min-width: 1000px;
+
 }
 
 .buyer-group {
