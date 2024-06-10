@@ -12,4 +12,8 @@ module.exports = defineConfig({
       return definitions;
     });
   },
+
+  devServer: {
+    historyApiFallback: true,
+  },
 });
