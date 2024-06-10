@@ -12,14 +12,7 @@ module.exports = defineConfig({
       return definitions;
     });
   },
-  // devServer: {
-  //   proxy: {
-  //     '/api': {
-  //       target: 'https://port-0-backend-and8yv2klx4clqjs.sel5.cloudtype.app',
-  //       changeOrigin: true,
-  //       secure: false,
-  //       logLevel: 'debug', // 추가: 디버그 레벨 로그
-  //     },
-  //   },
-  // },
+  devServer: {
+    historyApiFallback: true, // 이 옵션을 추가하여 devServer가 history API fallback을 지원하도록 합니다.
+  }
 });
