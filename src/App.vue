@@ -22,7 +22,8 @@ export default {
        || to.name === 'LawsuitReceipt'
        || to.name === 'LawsuitReceiptReport'
        || to.name === 'RealRegReceipt'
-       || to.name === 'RealRegReceiptReport') {
+       || to.name === 'RealRegReceiptReport'
+       || to.name === 'EasyReceiptReport') {
         this.showHeader = false;
       } else {
         this.showHeader = !!localStorage.getItem('token');

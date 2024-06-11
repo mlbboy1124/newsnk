@@ -13,18 +13,27 @@
         </div>
 
         <b-table :items="filteredEasyReceipts" :fields="fields" v-model:sortBy="sortBy" v-model:sortDesc.sync="sortDesc"
-    sort-icon-left @row-clicked="viewEasyReceipt" hover responsive="sm" class="small-text-table">
-    <template #cell(paymentStatus)="data">
-        <span :style="{ color: data.item.paymentStatus === '미입금' ? 'red' : 'green' }">{{ data.item.paymentStatus }}</span>
+            sort-icon-left @row-clicked="viewEasyReceipt" hover responsive="sm" class="small-text-table">
+            <template #cell(division1)="data">
+        <span :style="{ color: getDivisionColor(data.item.division1) }">{{ data.item.division1 }}</span>
     </template>
-    <template #cell(taxInvoiceStatus)="data">
-        <span :style="{ color: data.item.taxInvoiceStatus === '발행전' ? 'red' : data.item.taxInvoiceStatus === '발행완료' ? 'green' : 'darkgray' }">{{ data.item.taxInvoiceStatus }}</span>
-    </template>
-    <template #cell(actions)="data">
-        <b-button size="sm mx-1" @click="printReceipt(data.item)">인쇄</b-button>
-        <b-button size="sm mx-1" variant="danger" @click="deleteReceipt(data.item)">삭제</b-button>
-    </template>
-</b-table>
+            <template #cell(price)="data">
+                {{ formattedValue(data.item.price) }}
+            </template>
+            <template #cell(paymentStatus)="data">
+                <span :style="{ color: data.item.paymentStatus === '미입금' ? 'red' : 'green' }">{{ data.item.paymentStatus
+                    }}</span>
+            </template>
+            <template #cell(taxInvoiceStatus)="data">
+                <span
+                    :style="{ color: data.item.taxInvoiceStatus === '발행전' ? 'red' : data.item.taxInvoiceStatus === '발행완료' ? 'green' : 'darkgray' }">{{
+                        data.item.taxInvoiceStatus }}</span>
+            </template>
+            <template #cell(actions)="data">
+                <b-button size="sm mx-1" @click="navigateToReport(data.item)">인쇄</b-button>
+                <b-button size="sm mx-1" variant="danger" @click="deleteReceipt(data.item)">삭제</b-button>
+            </template>
+        </b-table>
         <div class="d-flex justify-content-between align-items-center mt-3">
             <b-pagination id="pagination" v-model="currentPage" :total-rows="easyreceipts.length"
                 :per-page="easyreceiptsPerPage" aria-controls="my-table"></b-pagination>
@@ -70,7 +79,8 @@ export default {
             const start = (this.currentPage - 1) * this.easyreceiptsPerPage;
             const end = this.currentPage * this.easyreceiptsPerPage;
             return filtered.slice(start, end);
-        }
+        },
+        
     },
     created() {
         this.fetchReceipts();
@@ -84,6 +94,21 @@ export default {
                 console.error("간편영수증 불러오는 중에 오류가 발생했습니다:", error.response ? error.response.data : error.message);
             }
         },
+        formattedValue(value) {
+            return value === null || value === undefined ? '' : new Intl.NumberFormat().format(value);
+        },
+        getDivisionColor(division) {
+            switch (division) {
+                case '상업등기':
+                    return 'blue';
+                case '부동산등기':
+                    return 'green';
+                case '소송사건':
+                    return 'black';
+                default:
+                    return 'black';
+            }
+        },
         onSearch() {
             this.currentPage = 1;
         },
@@ -92,6 +117,11 @@ export default {
         },
         createEasyReceipt() {
             this.$router.push({ name: 'EasyReceiptEdit' });
+        },
+        navigateToReport(easyreceipt) {
+            const url = this.$router.resolve({ name: 'EasyReceiptReport', params: { easyreceipt_id: easyreceipt.easyreceipt_id } }).href;
+            const newWindowName = `newwindow-${easyreceipt.easyreceipt_id}`;
+            window.open(url, newWindowName, 'width=1050,height=800');
         },
         async deleteReceipt(easyreceipt) {
             if (confirm("이 영수증을 삭제하시겠습니까?")) {
@@ -104,7 +134,7 @@ export default {
                     alert("영수증 삭제 중 오류가 발생했습니다.");
                 }
             }
-        }  
+        }
     }
 };
 </script>
@@ -123,20 +153,52 @@ export default {
 }
 
 span {
-    font-size: 12px !important;
+    font-size: 14px !important;
 }
 
-.col1-registration-date {min-width: 50px;}
-.col1-division1 {min-width: 50px;}
-.col1-division2 {max-width: 150px;}
-.col1-requester {min-width: 200px;}
-.col1-price {width: 100px;}
-.col1-expensesRight {width: 100px;}
-.col1-lastTotalAmount {width: 100px;}
-.col1-manager {width: 100px;}
-.col1-paymentStatus {width: 60px;}
-.col1-taxInvoiceStatus {width: 60px;}
-.col1-actions{width:120px;}
+.col1-registration-date {
+    min-width: 50px;
+}
+
+.col1-division1 {
+    min-width: 50px;
+}
+
+.col1-division2 {
+    max-width: 150px;
+}
+
+.col1-requester {
+    min-width: 200px;
+}
+
+.col1-price {
+    width: 100px;
+}
+
+.col1-expensesRight {
+    width: 100px;
+}
+
+.col1-lastTotalAmount {
+    width: 100px;
+}
+
+.col1-manager {
+    width: 100px;
+}
+
+.col1-paymentStatus {
+    width: 60px;
+}
+
+.col1-taxInvoiceStatus {
+    width: 60px;
+}
+
+.col1-actions {
+    width: 120px;
+}
 
 /* b-pagination 스타일 조정 */
 .pagination .page-link {

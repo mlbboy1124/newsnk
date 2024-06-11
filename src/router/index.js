@@ -4,6 +4,7 @@ import HomePage from '@/components/HomePage.vue';
 // 간편영수증
 import EasyReceipt_Page from '@/components/EasyReceipt/EasyReceipt_Page.vue';
 import EasyReceiptEdit from '@/components/EasyReceipt/EasyReceiptEdit.vue';
+import EasyReceiptReport from '@/components/EasyReceipt/EasyReceiptReport.vue';
 // 상업등기
 import CoReg_Page from '@/components/Co-Reg/CoReg_Page.vue';
 // 부동산등기
@@ -27,6 +28,7 @@ const routes = [
   // 간편영수증
   { path: '/easyreceipt', component: EasyReceipt_Page, meta: { requiresAuth: true } },
   { path: '/easyreceipt/edit/:easyreceipt_id?', component: EasyReceiptEdit, name: 'EasyReceiptEdit', props: true, meta: { requiresAuth: true } },
+  { path: '/easyreceipt/receiptReport/:easyreceipt_id', name: 'EasyReceiptReport', component: EasyReceiptReport, props: true, meta: { requiresAuth: true } },
   // 상업등기
   { path: '/coreg', component: CoReg_Page, meta: { requiresAuth: true } },
   // 부동산등기
