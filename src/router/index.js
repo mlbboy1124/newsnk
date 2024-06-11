@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import jwtDecode from 'jwt-decode'; // jwt-decode 라이브러리 임포트
+import { jwtDecode } from 'jwt-decode'; // jwt-decode 라이브러리 임포트
 
 
 // 홈페이지
