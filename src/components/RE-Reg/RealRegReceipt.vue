@@ -19,7 +19,7 @@
                         <td @click="loadReceipt(receipt)" class="text-center ellipsis">{{ receipt.createdAt }}</td>
                         <td @click="loadReceipt(receipt)" class="text-center ellipsis">{{ realreg.settlement_date }}
                         </td>
-                        <td @click="loadReceipt(receipt)" class="text-center ellipsis">{{ realreg.buyer }}</td>
+                        <td @click="loadReceipt(receipt)" class="text-center ellipsis">{{ buyerInfo.names }}</td>
                         <td @click="loadReceipt(receipt)" class="text-center ellipsis">{{ realreg.requester }}</td>
                         <td @click="loadReceipt(receipt)" class="text-center ellipsis">{{ realreg.division }}</td>
                         <td @click="loadReceipt(receipt)" class="text-right ellipsis">{{
@@ -42,7 +42,7 @@
                 <tbody>
                     <tr>
                         <th class="text-center">의뢰인</th>
-                        <td>{{ realreg.buyer }}</td>
+                        <td>{{ buyerInfo.names }}</td>
                         <th class="text-center">등기구분</th>
                         <td>{{ realreg.division }}</td>
 
@@ -149,11 +149,11 @@ export default {
             realreg: {
                 requester: '',
                 division: '',
-                buyer: '',
+                buyers: [],
                 manager: '',
                 settlement_date: '',
                 sell_price: '',
-                memo:'',
+                memo: '',
             },
             expensesLeft: [
                 { name: '등록면허세 및 취득세', amount: 0 },
@@ -179,6 +179,14 @@ export default {
         };
     },
     computed: {
+        buyerInfo() {
+            if (!this.realreg) return { names: '', numbers: '', addresses: '' };
+            return {
+                names: this.realreg.buyers.map(buyer => buyer.name).join(', '),
+                numbers: this.realreg.buyers.map(buyer => buyer.number).join(', '),
+                addresses: this.realreg.buyers.map(buyer => buyer.address).join(', ')
+            };
+        },
         maxItems() {
             return Math.max(this.expensesLeft.length, this.expensesRight.length);
         },
@@ -326,7 +334,7 @@ export default {
             }));
             this.notes = receipt.notes; // 저장된 참고사항 불러오기
         },
-        
+
         resetForm() {
             this.expensesLeft = [
                 { name: '등록면허세 및 취득세', amount: 0 },

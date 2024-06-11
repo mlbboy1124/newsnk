@@ -38,7 +38,7 @@ export default {
         { key: 'settlement_time', label: '시간', thClass: 'col-settlement-Time', tdClass: 'col-settlement-Time' },
         { key: 'repayment_status', label: '상환', thClass: 'col-repayment-status', tdClass: 'col-repayment-status' },
         { key: 'transaction_address', label: '거래주소', thClass: 'col-transaction-address', tdClass: 'col-transaction-address' },
-        { key: 'buyer', label: '매수인', thClass: 'col-buyer', tdClass: 'col-buyer' },
+        { key: 'buyers', label: '매수인', thClass: 'col-buyer', tdClass: 'col-buyer' },
         { key: 'manager', label: '담당자', thClass: 'col-manager', tdClass: 'col-manager' }
       ],
       realregs: [],
@@ -48,7 +48,10 @@ export default {
   },
   computed: {
     filteredRealregs() {
-      let filtered = this.realregs.filter(realreg => {
+      let filtered = this.realregs.map(realreg => ({
+        ...realreg,
+        buyers: realreg.buyers.map(buyer => buyer.name).join(', ')
+      })).filter(realreg => {
         return Object.values(realreg).some(value =>
           String(value).toLowerCase().includes(this.searchQuery.toLowerCase())
         );
@@ -56,7 +59,7 @@ export default {
       const start = (this.currentPage - 1) * this.realregsPerPage;
       const end = this.currentPage * this.realregsPerPage;
       return filtered.slice(start, end);
-    }
+    },
   },
   created(){
   this.fetchRealregs();

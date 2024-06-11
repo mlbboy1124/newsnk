@@ -5,8 +5,7 @@
       <tbody>
         <tr>
           <td class="col_head" style="text-align: right;border-style:hidden;width: 125px;">의뢰인 :</td>
-          <td class="col_head" style="text-align: center;border-style:hidden;">{{
-            receiptreportfiltered.realreg.buyer }}</td>
+          <td class="col_head" style="text-align: center;border-style:hidden;">{{ buyerInfo.names }}</td>
           <td class="col_head" style="text-align: right;border-style:hidden;width: 125px;">사건 접수일 :</td>
           <td class="col_head" style="text-align: center;border-style:hidden;">{{
             receiptreportfiltered.receipt.createdAt }}</td>
@@ -145,6 +144,14 @@ export default {
     this.loadReceipt();
   },
   computed: {
+    buyerInfo() {
+            if (!this.receiptreportfiltered.realreg) return { names: '', numbers: '', addresses: '' };
+            return {
+                names: this.receiptreportfiltered.realreg.buyers.map(buyer => buyer.name).join(', '),
+                numbers: this.receiptreportfiltered.realreg.buyers.map(buyer => buyer.number).join(', '),
+                addresses: this.receiptreportfiltered.realreg.buyers.map(buyer => buyer.address).join(', ')
+            };
+        },
     currentDate() {
       const today = new Date();
       const year = today.getFullYear();

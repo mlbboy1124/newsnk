@@ -23,7 +23,7 @@
               <td>{{ realreg.manager }}</td>
               <th>잔금시간</th>
               <td class="lastcol">{{ formatTime(realreg.settlement_time) }}</td>
-              
+
             </tr>
             <tr>
               <th>기준금액</th>
@@ -43,13 +43,13 @@
         <tbody>
           <tr>
             <th>이름</th>
-            <td>{{ realreg.buyer }}</td>
+            <td>{{ buyerInfo.names }}</td>
             <th>주민번호</th>
-            <td>{{ realreg.buyer_number }}</td>
+            <td>{{ buyerInfo.numbers }}</td>
           </tr>
           <tr>
             <th>주소</th>
-            <td colspan="3">{{ realreg.buyer_address }}</td>
+            <td colspan="3">{{ buyerInfo.addresses }}</td>
           </tr>
         </tbody>
       </table>
@@ -58,16 +58,17 @@
         <tbody>
           <tr>
             <th>이름</th>
-            <td>{{ realreg.seller }}</td>
+            <td>{{ sellerInfo.names }}</td>
             <th>주민번호</th>
-            <td>{{ realreg.seller_number }}</td>
+            <td>{{ sellerInfo.numbers }}</td>
           </tr>
           <tr>
             <th>주소</th>
-            <td colspan="3">{{ realreg.seller_address }}</td>
+            <td colspan="3">{{ sellerInfo.addresses }}</td>
           </tr>
         </tbody>
       </table>
+
       <h5 class="text-center" style="margin-bottom:10px;padding-right: 630px;">참고사항</h5>
       <table id="sub_table" class="table table-bordered sub_table">
         <tbody>
@@ -115,6 +116,22 @@ export default {
           return this.realreg.effect;
       }
     },
+    buyerInfo() {
+      if (!this.realreg) return { names: '', numbers: '', addresses: '' };
+      return {
+        names: this.realreg.buyers.map(buyer => buyer.name).join(', '),
+        numbers: this.realreg.buyers.map(buyer => buyer.number).join(', '),
+        addresses: this.realreg.buyers.map(buyer => buyer.address).join(', ')
+      };
+    },
+    sellerInfo() {
+      if (!this.realreg) return { names: '', numbers: '', addresses: '' };
+      return {
+        names: this.realreg.sellers.map(seller => seller.name).join(', '),
+        numbers: this.realreg.sellers.map(seller => seller.number).join(', '),
+        addresses: this.realreg.sellers.map(seller => seller.address).join(', ')
+      };
+    }
   },
   methods: {
     async loadRealregbyid() {
@@ -191,9 +208,11 @@ export default {
   background-color: #dadada;
   width: 90px;
 }
+
 .table td {
   min-width: 100px;
 }
+
 .lastcol {
   width: 100px;
 }
