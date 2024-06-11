@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomePage from '@/components/HomePage.vue';
+import jwtDecode from 'jwt-decode'; // jwt-decode 라이브러리 임포트
 
+
+// 홈페이지
+import HomePage from '@/components/HomePage.vue';
 // 간편영수증
 import EasyReceipt_Page from '@/components/EasyReceipt/EasyReceipt_Page.vue';
 import EasyReceiptEdit from '@/components/EasyReceipt/EasyReceiptEdit.vue';
@@ -54,6 +57,23 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token');
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+  if (token) {
+    try {
+      const decodedToken = jwtDecode(token);
+      const currentTime = Math.floor(Date.now() / 1000);
+
+      if (decodedToken.exp < currentTime) {
+        localStorage.removeItem('token');
+        next('/');
+        return;
+      }
+    } catch (e) {
+      localStorage.removeItem('token');
+      next('/');
+      return;
+    }
+  }
 
   if (to.path === '/' && token) {
     next('/home');
