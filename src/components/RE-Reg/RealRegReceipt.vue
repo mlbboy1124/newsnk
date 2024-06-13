@@ -154,12 +154,15 @@ export default {
                 settlement_date: '',
                 sell_price: '',
                 memo: '',
+                submitTax: '',
+                eduTax: '',
+                ruralTax: '',
             },
             expensesLeft: [
                 { name: '등록면허세 및 취득세', amount: 0 },
                 { name: '교육세', amount: 0 },
-                { name: '등기신청수수료', amount: 13000 },
                 { name: '농특세', amount: 0 },
+                { name: '등기신청수수료', amount: 13000 },
                 { name: '국민주택채권', amount: 0 },
                 { name: '인지세', amount: 0 },
                 { name: '우편 및 등제증명', amount: 20000 },
@@ -239,6 +242,22 @@ export default {
             axios.get(`/api/realregs/${this.realreg_id}`)
                 .then(response => {
                     this.realreg = response.data;
+                    // realreg 값을 기반으로 expensesLeft 업데이트
+                    const taxMapping = {
+                        '등록면허세 및 취득세': isNaN(parseInt(this.realreg.submitTax, 10)) ? 0 : parseInt(this.realreg.submitTax, 10),
+                        '교육세': isNaN(parseInt(this.realreg.eduTax, 10)) ? 0 : parseInt(this.realreg.eduTax, 10),
+                        '농특세': isNaN(parseInt(this.realreg.ruralTax, 10)) ? 0 : parseInt(this.realreg.ruralTax, 10),
+                    };
+
+                    this.expensesLeft = this.expensesLeft.map(expense => {
+                        if (taxMapping[expense.name] !== undefined) {
+                            return {
+                                ...expense,
+                                amount: taxMapping[expense.name]
+                            };
+                        }
+                        return expense;
+                    });
                 })
                 .catch(error => {
                     console.error('부동산 등기정보를 불러오는 중에 오류가 발생했습니다:', error);
@@ -247,7 +266,7 @@ export default {
         fetchReceipts() {
             axios.get(`/api/realregs/receipts/${this.realreg_id}`)
                 .then(response => {
-                    this.receipts = response.data
+                    this.receipts = response.data;
                 })
                 .catch(error => {
                     console.error('영수증 목록을 불러오는 중에 오류가 발생했습니다:', error);
@@ -339,11 +358,11 @@ export default {
             this.expensesLeft = [
                 { name: '등록면허세 및 취득세', amount: 0 },
                 { name: '교육세', amount: 0 },
-                { name: '등기신청수수료', amount: 0 },
                 { name: '농특세', amount: 0 },
+                { name: '등기신청수수료', amount: 13000 },
                 { name: '국민주택채권', amount: 0 },
                 { name: '인지세', amount: 0 },
-                { name: '우편 및 등제증명', amount: 0 },
+                { name: '우편 및 등제증명', amount: 20000 },
             ];
             this.expensesRight = [
                 { name: '기본보수', amount: 0 },
@@ -353,6 +372,21 @@ export default {
                 { name: '', amount: 0 },
                 { name: '', amount: 0 },
             ];
+            const taxMapping = {
+                '등록면허세 및 취득세': parseInt(this.realreg.submitTax, 10),
+                '교육세': parseInt(this.realreg.eduTax, 10),
+                '농특세': parseInt(this.realreg.ruralTax, 10)
+            };
+
+            this.expensesLeft = this.expensesLeft.map(expense => {
+                if (taxMapping[expense.name] !== undefined) {
+                    return {
+                        ...expense,
+                        amount: taxMapping[expense.name]
+                    };
+                }
+                return expense;
+            });
         },
         closeForm() {
             window.close();

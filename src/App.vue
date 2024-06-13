@@ -22,6 +22,7 @@ export default {
        || to.name === 'LawsuitReceipt'
        || to.name === 'LawsuitReceiptReport'
        || to.name === 'RealRegReceipt'
+       || to.name === 'RealRegDocument'
        || to.name === 'RealRegReceiptReport'
        || to.name === 'EasyReceiptReport') {
         this.showHeader = false;

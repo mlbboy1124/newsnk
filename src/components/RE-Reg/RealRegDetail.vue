@@ -35,6 +35,16 @@
               <th>상환</th>
               <td>{{ realreg.repayment_status }}</td>
             </tr>
+            <tr>
+              <th>취득세</th>
+              <td>{{ formattedValue(realreg.submitTax) }}</td>
+              <th>교육세</th>
+              <td>{{ formattedValue(realreg.eduTax) }}</td>
+              <th>농특세</th>
+              <td>{{ formattedValue(realreg.ruralTax) }}</td>
+              <th></th>
+              <td></td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -78,9 +88,19 @@
           </tr>
         </tbody>
       </table>
+
+      <h5 class="text-center" style="margin-bottom:10px;padding-right: 630px;">부동산의 표시</h5>
+      <table id="sub_table" class="table table-bordered sub_table">
+        <tbody>
+          <tr>
+            <th>부동산의 표시</th>
+            <td class="memo-cell">{{ realreg.realestate_view }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="text-center" style="margin-top:60px; margin-bottom:100px">
-      <button class="btn btn-outline-success mx-1">서류작성</button>
+      <button class="btn btn-outline-success mx-1" @click="createDocument">서류작성</button>
       <button class="btn btn-outline-dark mx-1" @click="createReceipt">영수증작성</button>
       <button class="btn btn-primary mx-1" @click="editRealreg">수정</button>
       <button class="btn btn-danger mx-1" @click="deleteRealreg">삭제</button>
@@ -142,6 +162,10 @@ export default {
         .catch(error => {
           console.error('부동산 등기정보를 불러오는 중에 오류가 발생했습니다:', error);
         });
+    },
+    createDocument(){
+      const url = this.$router.resolve({ name: 'RealRegDocument', params: { realreg_id: this.realreg.realreg_id } }).href;
+      window.open(url, 'newwindow', 'width=850,height=1000');
     },
     createReceipt() {
       const url = this.$router.resolve({ name: 'RealRegReceipt', params: { realreg_id: this.realreg.realreg_id } }).href;
@@ -218,6 +242,8 @@ export default {
 }
 
 .memo-cell {
+  padding-left: 50px !important;
+  text-align: left !important;
   word-wrap: break-word;
   white-space: pre-wrap;
 }

@@ -16,6 +16,7 @@ import RealRegDetail from '@/components/RE-Reg/RealRegDetail.vue';
 import RealRegEdit from '@/components/RE-Reg/RealRegEdit.vue';
 import RealRegReceipt from '@/components/RE-Reg/RealRegReceipt.vue';
 import RealRegReceiptReport from '@/components/RE-Reg/RealRegReceiptReport.vue';
+import RealRegDocument from '@/components/RE-Reg/RealRegDocument.vue';
 //소송
 import LawsuitPage from '@/components/Lawsuit/LawsuitPage.vue';
 import LawsuitDocument from '@/components/Lawsuit/LawsuitDocument.vue';
@@ -40,6 +41,7 @@ const routes = [
   { path: '/realreg/edit/:realreg_id?', component: RealRegEdit, name: 'RealRegEdit', props: true, meta: { requiresAuth: true } },
   { path: '/realreg/receipt/:realreg_id', name: 'RealRegReceipt', component: RealRegReceipt, props: true, meta: { requiresAuth: true } },
   { path: '/realreg/receiptReport/:receipt_id', name: 'RealRegReceiptReport', component: RealRegReceiptReport, props: true, meta: { requiresAuth: true } },
+  { path: '/realreg/document/:realreg_id', name: 'RealRegDocument', component: RealRegDocument, props: true, meta: { requiresAuth: true } },
   // 소송
   { path: '/lawsuit', component: LawsuitPage, meta: { requiresAuth: true } },
   { path: '/lawsuit/document/:index', name: 'LawsuitDocument', component: LawsuitDocument, props: true, meta: { requiresAuth: true } },
