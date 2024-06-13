@@ -97,35 +97,6 @@
           <textarea class="form-control" id="memo" v-model="realreg.memo"></textarea>
         </div>
         <hr>
-        <div class="buyer-group">
-          <h5 class="text-center">매수인(등기권리자) 정보</h5>
-          <div v-for="(buyer, index) in realreg.buyers" :key="index" class="buyer-info">
-            <div class="form-row">
-              <div class="form-group col">
-                <label for="buyer">이름</label>
-                <input type="text" class="form-control" v-model="buyer.name" required>
-              </div>
-              <div class="form-group col">
-                <label for="buyer_number">주민번호</label>
-                <input type="text" class="form-control" v-model="buyer.number" required>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group col">
-                <label for="buyer_address">주소</label>
-                <input type="text" class="form-control" v-model="buyer.address" required>
-              </div>
-              <div class="form-group col-1 d-flex align-items-center">
-                <button v-if="realreg.buyers.length > 1" type="button" class="btn btn-outline-danger btn-sm"
-                  @click="removeBuyer(index)">삭제</button>
-              </div>
-            </div>
-          </div>
-          <div class="d-flex justify-content-end">
-            <button type="button" class="btn btn-outline-primary btn-sm" @click="addBuyer">매수인(등기권리자) 추가</button>
-          </div>
-        </div>
-        <hr>
         <div class="seller-group">
           <h5 class="text-center" style="margin-bottom:10px;">매도인(등기의무자) 정보</h5>
           <div v-for="(seller, index) in realreg.sellers" :key="index" class="seller-info">
@@ -155,6 +126,36 @@
           </div>
         </div>
         <hr>
+        <div class="buyer-group">
+          <h5 class="text-center">매수인(등기권리자) 정보</h5>
+          <div v-for="(buyer, index) in realreg.buyers" :key="index" class="buyer-info">
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="buyer">이름</label>
+                <input type="text" class="form-control" v-model="buyer.name" required>
+              </div>
+              <div class="form-group col">
+                <label for="buyer_number">주민번호</label>
+                <input type="text" class="form-control" v-model="buyer.number" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="buyer_address">주소</label>
+                <input type="text" class="form-control" v-model="buyer.address" required>
+              </div>
+              <div class="form-group col-1 d-flex align-items-center">
+                <button v-if="realreg.buyers.length > 1" type="button" class="btn btn-outline-danger btn-sm"
+                  @click="removeBuyer(index)">삭제</button>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-outline-primary btn-sm" @click="addBuyer">매수인(등기권리자) 추가</button>
+          </div>
+        </div>
+        <hr>
+
         <div class="d-flex justify-content-end">
           <button type="submit" class="btn btn-primary mx-1">{{ isEdit ? '수정' : '작성' }}</button>
           <button type="button" class="btn btn-secondary mx-1" @click="goBack">취소</button>

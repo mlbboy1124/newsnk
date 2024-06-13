@@ -48,21 +48,7 @@
           </tbody>
         </table>
       </div>
-      <h5 class="text-center" style="margin-bottom:10px;padding-right: 500px;">매수인(등기권리자) 정보</h5>
-      <table id="sub_table" class="table table-bordered sub_table">
-        <tbody>
-          <tr>
-            <th>이름</th>
-            <td>{{ buyerInfo.names }}</td>
-            <th>주민번호</th>
-            <td>{{ buyerInfo.numbers }}</td>
-          </tr>
-          <tr>
-            <th>주소</th>
-            <td colspan="3">{{ buyerInfo.addresses }}</td>
-          </tr>
-        </tbody>
-      </table>
+
       <h5 class="text-center" style="margin-bottom:10px;padding-right: 500px;">매도인(등기의무자) 정보</h5>
       <table id="sub_table" class="table table-bordered sub_table">
         <tbody>
@@ -75,6 +61,22 @@
           <tr>
             <th>주소</th>
             <td colspan="3">{{ sellerInfo.addresses }}</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <h5 class="text-center" style="margin-bottom:10px;padding-right: 500px;">매수인(등기권리자) 정보</h5>
+      <table id="sub_table" class="table table-bordered sub_table">
+        <tbody>
+          <tr>
+            <th>이름</th>
+            <td>{{ buyerInfo.names }}</td>
+            <th>주민번호</th>
+            <td>{{ buyerInfo.numbers }}</td>
+          </tr>
+          <tr>
+            <th>주소</th>
+            <td colspan="3">{{ buyerInfo.addresses }}</td>
           </tr>
         </tbody>
       </table>
