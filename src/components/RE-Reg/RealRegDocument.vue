@@ -41,7 +41,7 @@ export default {
       { label: '체크리스트', checked: false, file: 'checkList.docx' },
       { label: '자필서명정보', checked: false, file: 'sign_check.docx' },
       { label: '취득세 신고서', checked: false, file: 'template.docx' },
-      { label: '생애최초주택감면 신청서', checked: false, file: 'template.docx' },
+      { label: '생애최초주택감면 신청서', checked: false, file: 'first_house.docx' },
       { label: '확인서면', checked: false, file: 'checkDoc.docx' },
       // Add more options here as needed
     ]);
