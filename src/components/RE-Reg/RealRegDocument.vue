@@ -1,6 +1,18 @@
 <template>
   <div class="container">
+    <h3>신청법무사 선택</h3>
+    <select v-model="selectedNotary" class="form-control">
+      <option v-for="notary in notaries" :key="notary.id" :value="notary">
+        {{ notary.name }}
+      </option>
+    </select>
+    <hr>
     <h3>서류 다운로드</h3>
+    <div class="d-flex justify-content-end">
+    <button class="btn btn-outline-secondary mx-1" style="margin-bottom: 10px;" type="button" @click="toggleSelectAll">
+          {{ allSelected ? '선택 해제' : '전체 선택' }}
+        </button>
+      </div>
     <form @submit.prevent="processDocx">
       <div v-for="(option, index) in options" :key="index" class="checkbox-card" :class="{ checked: option.checked }">
         <input type="checkbox" v-model="option.checked" :id="'option' + index" class="custom-checkbox">
@@ -16,8 +28,8 @@
         </label>
       </div>
       <div class="text-center" style="margin-top:10px; margin-bottom:10px">
-        <button class="btn btn-outline-primary mx-1" type="submit">처리</button>
-        <button class="btn btn-outline-primary mx-1" type="button" @click="downloadZip">ZIP 다운로드</button>
+        <button class="btn btn-outline-primary mx-1" type="submit">개별 다운로드</button>
+        <button class="btn btn-outline-primary mx-1" type="button" @click="downloadZip">압축 다운로드</button>
         <!-- <b-button variant="outline-success mx-1" @click="resetForm">초기화</b-button> -->
         <b-button variant="outline-danger mx-1" @click="closeForm">닫기</b-button>
       </div>
@@ -27,7 +39,7 @@
 
 <script>
 import axios from '@/axios';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import PizZip from 'pizzip';
 import Docxtemplater from 'docxtemplater';
 import { saveAs } from 'file-saver';
@@ -38,13 +50,39 @@ export default {
   name: 'RealRegDocument',
   setup(props) {
     const options = ref([
-      { label: '체크리스트', checked: false, file: 'checkList.docx' },
-      { label: '자필서명정보', checked: false, file: 'sign_check.docx' },
-      { label: '취득세 신고서', checked: false, file: 'template.docx' },
-      { label: '생애최초주택감면 신청서', checked: false, file: 'first_house.docx' },
-      { label: '확인서면', checked: false, file: 'checkDoc.docx' },
+      { label: '체크리스트', checked: true, file: 'checkList.docx' },
+      { label: '자필서명정보', checked: true, file: 'sign_check.docx' },
+      { label: '취득세 신고서', checked: true, file: 'template.docx' },
+      { label: '생애최초주택감면 신청서', checked: true, file: 'first_house.docx' },
+      { label: '확인서면', checked: true, file: 'checkDoc.docx' },
       // Add more options here as needed
     ]);
+
+    const notaries = ref([]);
+    const selectedNotary = ref(null);
+    const office = ref([]);
+    const allSelected = ref(true);
+
+     
+
+    onMounted(async () => {
+      try {
+        const responseuserinfo = await axios.get(`/api/user/me`);
+        const officeId = responseuserinfo.data.office_id;
+        const responseNotaries = await axios.get(`/api/users`, {
+          params: {
+            role: '법무사',
+            office_id: officeId
+          }
+        });
+
+        notaries.value = responseNotaries.data;
+        office.value = responseuserinfo.data.office;
+      } catch (error) {
+        console.error('Error fetching user info:', error);
+      }
+    });
+
     const formatCurrency = (value) => {
       return new Intl.NumberFormat('ko-KR').format(value);
     };
@@ -55,6 +93,11 @@ export default {
     };
 
     const processDocx = async () => {
+      if (!selectedNotary.value) {
+        alert('법무사를 선택하세요.');
+        return;
+      }
+
       const selectedOptions = options.value.filter(option => option.checked);
 
       if (selectedOptions.length === 0) {
@@ -66,7 +109,6 @@ export default {
         const response = await axios.get(`/api/realregs/${props.realreg_id}`);
         const data = response.data;
         const buyertable = [...data.buyers];
-
         const commonTemplateData = {
           transaction_address: data.transaction_address,
           settlement_date: data.settlement_date,
@@ -88,6 +130,10 @@ export default {
           firstbuyer: data.buyers.length > 0 ? buyertable.shift() : null,
           leftbuyers: data.buyers.length > 1 ? buyertable : [],
           manager: data.manager,
+          notaryName: selectedNotary.value.name,
+          notaryNumber : selectedNotary.value.number,
+          notaryPhone: office.value.phone,
+          notaryAddress: office.value.address,
         };
 
         for (const option of selectedOptions) {
@@ -119,6 +165,11 @@ export default {
     };
 
     const downloadZip = async () => {
+      if (!selectedNotary.value) {
+        alert('법무사를 선택하세요.');
+        return;
+      }
+
       const selectedOptions = options.value.filter(option => option.checked);
 
       if (selectedOptions.length === 0) {
@@ -152,6 +203,10 @@ export default {
           firstbuyer: data.buyers.length > 0 ? buyertable.shift() : null,
           leftbuyers: data.buyers.length > 1 ? buyertable : [],
           manager: data.manager,
+          notaryName: selectedNotary.value.name,
+          notaryNumber : selectedNotary.value.number,
+          notaryPhone: office.value.phone,
+          notaryAddress: office.value.address,
         };
 
         const zip = new JSZip();
@@ -212,16 +267,29 @@ export default {
       });
     };
 
+    const toggleSelectAll = () => {
+      allSelected.value = !allSelected.value;
+      options.value.forEach(option => {
+        option.checked = allSelected.value;
+      });
+    };
+
     return {
       options,
       processDocx,
       downloadZip,
+      notaries,
+      selectedNotary,
+      office,
+      toggleSelectAll,
+      allSelected
     };
   },
   methods: {
     closeForm() {
       window.close();
     },
+    
   }
 };
 </script>

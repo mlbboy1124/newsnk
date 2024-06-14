@@ -176,7 +176,7 @@ export default {
         office_id: this.user.office_id,
         color: info.event.backgroundColor
       };
-      console.log(updatedEvent);
+
 
       try {
         await axios.put(`/api/events/${info.event.id}`, updatedEvent);

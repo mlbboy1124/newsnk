@@ -19,7 +19,7 @@
             <tr>
               <th>거래주소</th>
               <td colspan="3">{{ realreg.transaction_address }}</td>
-              <th>담당자</th>
+              <th>현장담당자</th>
               <td>{{ realreg.manager }}</td>
               <th>잔금시간</th>
               <td class="lastcol">{{ formatTime(realreg.settlement_time) }}</td>
@@ -64,7 +64,7 @@
           </tr>
         </tbody>
       </table>
-      
+
       <h5 class="text-center" style="margin-bottom:10px;padding-right: 500px;">매수인(등기권리자) 정보</h5>
       <table id="sub_table" class="table table-bordered sub_table">
         <tbody>

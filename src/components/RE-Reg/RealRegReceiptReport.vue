@@ -177,7 +177,6 @@ export default {
       axios.get(`/api/realregs/receipts/reportpage/${this.receipt_id}`)
         .then(response => {
           this.receiptreportfiltered.receipt = response.data;
-          console.log(response.data);
           return axios.get(`/api/realregs/${response.data.realreg_id}`);
         })
         .then(response => {

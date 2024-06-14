@@ -20,7 +20,15 @@
           <input type="text" v-model="officeCode" required placeholder="사무실 인증코드" />
         </div>
         <div class="input-group">
-          <input type="text" v-model="role" required placeholder="직책" />
+          <select v-model="role" @change="checkRole" required>
+            <option disabled value="">직책을 선택하세요</option>
+            <option value="법무사">법무사</option>
+            <option value="직접입력">직접입력</option>
+          </select>
+          <input v-if="role === '직접입력'" type="text" v-model="customRole" placeholder="직접 입력" />
+        </div>
+        <div class="input-group" v-if="role === '법무사'">
+          <input type="text" v-model="number" @input="formatNumber" maxlength="14" placeholder="주민등록번호" />
         </div>
         <div class="input-group">
           <input type="text" v-model="name" required placeholder="이름" />
@@ -61,9 +69,11 @@ export default {
       officeName: '',
       officeCode: '',
       role: '',
+      customRole: '',
       name: '',
       phoneNumber: '',
       email: '',
+      number: '',
       isModalOpen: false,
       searchQuery: '',
       offices: [],
@@ -71,8 +81,7 @@ export default {
   },
   computed: {
     filteredOffices() {
-      const filtered = this.offices.filter(office => office.office_name && office.office_name.includes(this.searchQuery)).slice(0, 10);
-      return filtered;
+      return this.offices.filter(office => office.office_name && office.office_name.includes(this.searchQuery)).slice(0, 10);
     }
   },
   methods: {
@@ -82,16 +91,16 @@ export default {
         return;
       }
       try {
-        console.log('Registering user:', this.username);
         await axios.post('/api/register', {
           username: this.username,
           password: this.password,
           officeName: this.officeName,
           officeCode: this.officeCode,
-          role: this.role,
+          role: this.role === '직접입력' ? this.customRole : this.role,
           name: this.name,
           phoneNumber: this.phoneNumber,
-          email: this.email
+          email: this.email,
+          number: this.role === '법무사' ? this.number : null,
         });
         alert('회원가입이 완료되었습니다.');
         this.$router.push('/');
@@ -102,12 +111,10 @@ export default {
     },
     openModal() {
       this.isModalOpen = true;
-      console.log('Modal opened');
       this.searchOffices(); // 모달이 열릴 때 초기 검색
     },
     closeModal() {
       this.isModalOpen = false;
-      console.log('Modal closed');
     },
     async searchOffices() {
       if (!this.searchQuery) {
@@ -115,10 +122,8 @@ export default {
         return;
       }
       try {
-        console.log('Searching offices with query:', this.searchQuery);
         const response = await axios.get(`/api/offices?q=${this.searchQuery}`);
         this.offices = response.data;
-        console.log('Offices found:', this.offices);
       } catch (error) {
         console.error('Error during office search:', error);
         alert('사무실 목록을 불러오는 중 오류가 발생했습니다.');
@@ -126,8 +131,20 @@ export default {
     },
     selectOffice(office) {
       this.officeName = office.office_name;
-      console.log('Office selected:', office);
       this.closeModal();
+    },
+    checkRole() {
+      if (this.role !== '직접입력') {
+        this.customRole = '';
+      }
+      if (this.role !== '법무사') {
+        this.number = '';
+      }
+    },
+    formatNumber() {
+      if (this.number.length === 6) {
+        this.number += '-';
+      }
     },
   }
 };
@@ -161,7 +178,8 @@ h1 {
   margin-bottom: 20px;
 }
 
-.input-group input {
+.input-group input,
+.input-group select {
   width: calc(100% - 50px);
   padding: 10px;
   border: 1px solid #ccc;
