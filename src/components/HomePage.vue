@@ -362,6 +362,12 @@ export default {
   color: black !important;
 }
 
+/* Additional style to ensure event content box is adjusted */
+:deep(.fc-event-main) {
+  display: block;
+  overflow: hidden;
+}
+
 /* Scoped styles for FullCalendar to remove underline */
 ::v-deep(.fc .fc-daygrid-day) {
   position: relative;

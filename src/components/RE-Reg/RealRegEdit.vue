@@ -193,9 +193,9 @@ export default {
       effect: '',
       memo: '',
       realestate_view: '',
-      submitTax: '',
-      eduTax: '',
-      ruralTax: '',
+      submitTax: 0,
+      eduTax: 0,
+      ruralTax: 0,
     });
 
     if (props.realreg_id) {
