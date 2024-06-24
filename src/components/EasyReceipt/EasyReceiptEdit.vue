@@ -169,7 +169,7 @@ export default {
             division1: '',
             division2: '',
             requester: '',
-            price: '',
+            price: 0,
             registration_date: '',
             manager: '',
             memo: '',

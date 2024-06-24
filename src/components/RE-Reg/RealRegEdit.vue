@@ -71,7 +71,7 @@
           </div>
           <div class="form-group col">
             <label for="registration_date">등록일</label>
-            <input type="date" class="form-control" id="registration_date" v-model="realreg.registration_date" required>
+            <input type="date" class="form-control" id="registration_date" v-model="realreg.registration_date" max="9999-12-31" required>
           </div>
           <div class="form-group col">
             <label for="manager">감면사항</label>
