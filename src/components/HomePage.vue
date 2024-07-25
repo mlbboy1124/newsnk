@@ -369,12 +369,12 @@ export default {
 }
 
 /* Scoped styles for FullCalendar to remove underline */
-::v-deep(.fc .fc-daygrid-day) {
+:deep(.fc .fc-daygrid-day) {
   position: relative;
 }
 
 /* Modified style for .holiday-name */
-::v-deep .holiday-name {
+:deep(.holiday-name) {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -383,7 +383,7 @@ export default {
 }
 
 /* Style for weekends */
-::v-deep .fc-weekend {
+:deep(.fc-weekend) {
   background-color: #f0f0f0;
 }
 </style>

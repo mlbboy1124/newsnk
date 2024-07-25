@@ -382,6 +382,9 @@ export default {
 </script>
 
 <style scoped>
+.container{
+  min-width: 1000px;
+}
 .form-box {
     padding: 0px 200px 0px 200px;
     display: flex;

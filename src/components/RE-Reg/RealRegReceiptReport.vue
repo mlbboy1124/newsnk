@@ -43,7 +43,7 @@
         <tbody>
           <tr v-for="(expensesLeft, idx) in receiptreportfiltered.receipt.expensesLeft" :key="idx">
             <td style="padding-left:15px;text-align: center;">{{ expensesLeft.name }}</td>
-            <td style="text-align: right; width: 80px;"> {{ formattedValue(expensesLeft.amount) }}</td>
+            <td style="text-align: right; width: 80px;">{{ formattedValue(expensesLeft.amount) }}</td>
             <td style="width: 10px; border-left-style: hidden;">원</td>
           </tr>
           <tr>
@@ -190,7 +190,7 @@ export default {
         });
     },
     formattedValue(value) {
-      return value === null || value === undefined ? '' : new Intl.NumberFormat().format(value);
+      return value === null || value === undefined || value === 0 ? '' : new Intl.NumberFormat().format(value);
     },
 
     waitForImagesAndPrint() {

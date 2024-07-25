@@ -177,7 +177,7 @@ export default {
     },
 
     formattedValue(value) {
-      return value === null || value === undefined ? '' : new Intl.NumberFormat().format(value);
+      return value === null || value === undefined || value === 0 ? '' : new Intl.NumberFormat().format(value);
     },
 
     waitForImagesAndPrint() {

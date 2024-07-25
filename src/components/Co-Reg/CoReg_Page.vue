@@ -1,17 +1,28 @@
-<template>
+<!-- <template>
   <div class="container">
+    <h3 style="text-align:center;margin-top:30px;"> 상업등기</h3>
+      <b-nav tabs style="min-width:1000px">
+          <b-nav-item to="/coreg/companies" exact class="menu-item">관리법인</b-nav-item>
+          <b-nav-item to="/coreg/period" class="menu-item">임기관리</b-nav-item>
+          <b-nav-item to="/coreg/submit" class="menu-item">등기신청</b-nav-item>
+        </b-nav>
     <div class="contents">
-      <h2 style="text-align: center;"><br><br><br>상업등기 페이지 제작중입니다.</h2>
+      <router-view />
     </div>
   </div>
-  </template>
-  
-  <script>
-  export default {
-    // AboutPage component logic
-  }
-  </script>
-  
-  <style scoped>
-  .contents{margin-right:5%; margin-left: 5%;}
-  </style>
+</template> -->
+<template>
+  <div class="CoReg_submit-container">
+    <h3>상업등기 신청 페이지 제작중</h3>
+    <p>상업등기 신청 페이지는 제작중 입니다.</p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'CoReg_Page'
+}
+</script>
+
+<style scoped>
+</style>

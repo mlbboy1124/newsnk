@@ -74,8 +74,8 @@
             <input type="date" class="form-control" id="registration_date" v-model="realreg.registration_date" max="9999-12-31" required>
           </div>
           <div class="form-group col">
-            <label for="manager">감면사항</label>
-            <select class="form-control" id="manager" v-model="realreg.effect" required>
+            <label for="effect">감면사항</label>
+            <select class="form-control" id="effect" v-model="realreg.effect" required>
               <option value="">선택하세요</option>
               <option value="null">없음</option>
               <option value="first">생애최초주택</option>
@@ -329,6 +329,9 @@ export default {
 </script>
 
 <style scoped>
+.container{
+  min-width: 1000px;
+}
 .form-box {
   padding: 50px 0px 50px 0;
   display: flex;

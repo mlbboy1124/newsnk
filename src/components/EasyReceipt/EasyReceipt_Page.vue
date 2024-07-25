@@ -20,6 +20,12 @@
             <template #cell(price)="data">
                 {{ formattedValue(data.item.price) }}
             </template>
+            <template #cell(rightAmount)="data">
+                {{ formattedValue(data.item.rightAmount) }}
+            </template>
+            <template #cell(lastTotalAmount)="data">
+                {{ formattedValue(data.item.lastTotalAmount) }}
+            </template>
             <template #cell(paymentStatus)="data">
                 <span :style="{ color: data.item.paymentStatus === '미입금' ? 'red' : 'green' }">{{ data.item.paymentStatus
                     }}</span>

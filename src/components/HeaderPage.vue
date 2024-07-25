@@ -27,6 +27,9 @@ export default {
 </script>
 
 <style scoped>
+header {
+  min-width:1000px;
+}
 button {
   margin-left: 15px;
   height: 40px;
