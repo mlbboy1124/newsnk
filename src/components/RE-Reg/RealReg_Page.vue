@@ -48,17 +48,36 @@ export default {
   },
   computed: {
     filteredRealregs() {
-      let filtered = this.realregs.map(realreg => ({
-        ...realreg,
-        buyers: realreg.buyers.map(buyer => buyer.name).join(', ')
-      })).filter(realreg => {
-        return Object.values(realreg).some(value =>
-          String(value).toLowerCase().includes(this.searchQuery.toLowerCase())
-        );
-      });
-      const start = (this.currentPage - 1) * this.realregsPerPage;
-      const end = this.currentPage * this.realregsPerPage;
-      return filtered.slice(start, end);
+        // 1. 검색어에 따라 필터링된 데이터를 정리 (buyers 필드를 문자열로 변환)
+        let filtered = this.realregs.map(realreg => ({
+            ...realreg,
+            buyers: realreg.buyers.map(buyer => buyer.name).join(', ')
+        })).filter(realreg => {
+            return Object.values(realreg).some(value =>
+                String(value).toLowerCase().includes(this.searchQuery.toLowerCase())
+            );
+        });
+
+        // 2. 정렬 로직 추가
+        filtered = filtered.sort((a, b) => {
+            const aValue = a[this.sortBy];
+            const bValue = b[this.sortBy];
+
+            if (aValue === bValue) {
+                return 0;
+            }
+
+            if (this.sortDesc) {
+                return aValue > bValue ? -1 : 1; // 내림차순
+            } else {
+                return aValue < bValue ? -1 : 1; // 오름차순
+            }
+        });
+
+        // 3. 페이지네이션 적용
+        const start = (this.currentPage - 1) * this.realregsPerPage;
+        const end = this.currentPage * this.realregsPerPage;
+        return filtered.slice(start, end);
     },
   },
   created(){
